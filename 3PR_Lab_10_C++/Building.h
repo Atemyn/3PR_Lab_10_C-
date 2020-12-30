@@ -173,7 +173,7 @@ public:
 				char adr[] = "NONE";
 				this->setBuilding("Жилое здание", adr, 1.0, 1.0, 1.0, 1, 0, 0);
 			}
-		}
+		} 
 		else
 		{
 			cout << "Отлично! Здание получилось устойчивым с коэффициентом устойчивости k = " << stabilityFactor << "." << endl << endl << endl;
