@@ -156,27 +156,30 @@ public:
 			rewind(stdin);
 		}
 		facade.inputFacade();
-		// Расчет коэффицента устойчивости.
-		stabilityFactor = (float)(sideLength * sideLength * sqrt(basementHeight)) / (floorHeight * floorAmount);
-		// Если коэффициент устойчивости меньше 1 - здание упадет; необхлдим повторный ввод характеристик
-		if (stabilityFactor < 1.0)
+		try
 		{
-			cout << "Коэффициент стабильности вашего здания k = " << stabilityFactor << " меньше единицы. Оно может рухнуть с минуты на минуту. Хотите ли перестроить его?" << endl;
-			cout << "Если НЕТ - нажмите Esc, если ДА - любую другую кнопку." << endl << endl;
-			if (_getch() != 27)
+			// Расчет коэффицента устойчивости.
+			stabilityFactor = (float)(sideLength * sideLength * sqrt(basementHeight)) / (floorHeight * floorAmount);
+			// Если коэффициент устойчивости меньше 1 - здание упадет.
+			if (stabilityFactor < 1.0)
 			{
-				inputBuilding();
+				throw stabilityFactor;
 			}
-			else
+			if (stabilityFactor == 1)
 			{
-				cout << "Здание не смогло устоять и рухнуло!" << endl << endl << endl;
-				char adr[] = "NONE";
-				this->setBuilding("Жилое здание", adr, 1.0, 1.0, 1.0, 1, 0, 0);
+				throw '1';
 			}
-		} 
-		else
-		{
 			cout << "Отлично! Здание получилось устойчивым с коэффициентом устойчивости k = " << stabilityFactor << "." << endl << endl << endl;
+		}
+		catch (int k)
+		{
+			cout << "Здание не смогло устоять и упало, так как его коэффициент устойчивости k = " << k << "." << endl << endl << endl;
+			char adr[] = "NONE";
+			this->setBuilding("Жилое здание", adr, 1.0, 1.0, 1.0, 1, 0, 0);
+		}
+		catch (char ch)
+		{
+			cout << "Здание получислось с минимально возможным коэффицентом устойчивости 1. Дальнейшее его ослабление приведет к разрушению." << endl << endl << endl;
 		}
 	}
 	/* Функция по сложению двух экземпляров класса Building, где build - экземпляр, который будет прибавляться. */
