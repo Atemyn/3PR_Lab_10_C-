@@ -1,0 +1,162 @@
+#include "Building.h"
+
+int main()
+{
+
+	// Подключение русского консольного ввода.
+	SetConsoleCP(1251);
+	// Подключение русского консольного вывода.
+	SetConsoleOutputCP(1251);
+
+	/* Работа со статическими экземплярами класса. */
+	Building firstStaticB, secondStaticB;
+
+	cout << "Программа по созданию зданий." << endl << "Все размерные данные вводятся в метрах." << endl;
+	cout << "Статические экземпляры: " << endl << endl;
+
+	firstStaticB.inputBuilding();
+
+	firstStaticB.addToBuilding(&secondStaticB);
+
+	firstStaticB.addFloors();
+	firstStaticB.removeFloors();
+	/*............................................*/
+
+	/* Работа с динамическими экземплярами класса. */
+	Building* firstDynamicB = new Building;
+	Building* secondDynamicB = new Building;
+
+	cout << "Динамические экземпляры: " << endl << endl;
+
+	firstDynamicB->inputBuilding();
+
+	firstDynamicB->addToBuilding(secondDynamicB);
+
+	firstDynamicB->addFloors();
+	firstDynamicB->removeFloors();
+	// Очистка памяти.
+	delete firstDynamicB;
+	delete secondDynamicB;
+	/*............................................*/
+
+	/* Динамический массив объектов. */
+	int amount = 2;
+	Building* firstDynamicArray = new Building[amount];
+
+	cout << "Динамический массив объектов: " << endl << endl;
+
+	firstDynamicArray->inputBuilding();
+
+	firstDynamicArray->addToBuilding((firstDynamicArray + 1));
+	// Очистка памяти.
+	delete[] firstDynamicArray;
+	/*...............................*/
+
+	/* Массив динамических объектов. */
+	Building* firstArrayOfDyn[2];
+	for (int i = 0; i < 2; i++)
+	{
+		// Выделение памяти.
+		firstArrayOfDyn[i] = new Building;
+	}
+
+	cout << "Массив динамических объектов: " << endl << endl;
+
+	firstArrayOfDyn[0]->inputBuilding();
+
+	firstArrayOfDyn[0]->addToBuilding(firstArrayOfDyn[1]);
+
+	for (int i = 0; i < 2; i++)
+	{
+		// Очистка памяти.
+		delete firstArrayOfDyn[i];
+	}
+	/*..............................*/
+
+	/* Новые функции Ассоциации. */
+	Building staticB;
+	cout << "Новые функции Ассоциации: " << endl;
+
+	staticB.inputBuilding();
+
+	staticB.openWindowsOnFacade();
+	staticB.closeWindowsOnFacade();
+	/*..........................*/
+
+	/* Возвращение значения из функции через указатель и через ссылку. */
+	Building b1, b2;
+	cout << "Возвращение значения из функции через указатель и через ссылку: " << endl;
+
+	b1.inputBuilding();
+	// Вызов первого метода через указатель.
+	b1.exchangeWindowsOnBuildings(&b2);
+
+	cout << "Первое здание после первого обмена:" << endl;
+	b1.getBuilding();
+
+	cout << "Второе здание после первого обмена:" << endl;
+	b2.getBuilding();
+	// Вызов второго метода через ссылку.
+	b1.exchangeWindowsOnBuildings(b2);
+
+	cout << "Первое здание после второго обмена:" << endl;
+	b1.getBuilding();
+
+	cout << "Второе здание после второго обмена:" << endl;
+	b2.getBuilding();
+	/*................................................................*/
+
+	/* Проверка условия с использованием this в функции addToBuilding. */
+	cout << "Проверка условия с использованием this в функции addToBuilding:" << endl << endl;
+	Building* buildd = new Building;
+	buildd->inputBuilding();
+	buildd->addToBuilding(buildd);
+	/*.................................................................*/
+
+	/* Использование статического метода. */
+	cout << "Использование статического метода:" << endl;
+	cout << "Общее число когда-либо построенных этой компанией зданий: " << Building::getCountOfBuildings() << endl << endl;
+	/*....................................*/
+
+	/* Вызов конструкторов статическими и динамическими объектами, инициализация массива. */
+	cout << "Вызов конструкторов статическими объектами:" << endl << endl;
+	char adr[] = "Пушкина, 11";
+	Building statB1, statB2(3), statB3((string)"Офисное здание", adr, 5, 1, 2, 3, 5, 3);
+	statB1.getBuilding();
+	statB2.getBuilding();
+	statB3.getBuilding();
+	cout << "Вызов конструкторов динамическими объектами:" << endl << endl;
+	Building* dynB1 = new Building;
+	Building* dynB2 = new Building(3);
+	Building* dynB3 = new Building((string)"Офисное здание", adr, 5, 1, 2, 3, 5, 3);
+	dynB1->getBuilding();
+	dynB2->getBuilding();
+	dynB3->getBuilding();
+	cin.get();
+	cout << "Инициализация массива конструктором с одним параметром:" << endl << endl;
+	Building masB[3] = { 3, 5, 7 };
+	masB[0].getBuilding();
+	masB[1].getBuilding();
+	masB[2].getBuilding();
+	/*.............................................*/
+
+	/* Глубокое копирование. */
+	cout << "Глубокое копирование:" << endl << endl;
+	Building build1((string)"Офисное здание", adr, 5, 1, 2, 3, 5, 3);
+	Building build2 = build1;
+
+	build1.inputBuilding();
+	build2.getBuilding();
+	/*....................*/
+
+	/* Перегрузка оператора присваивания. */
+	cout << "Перегрузка оператора присваивания:" << endl << endl;
+	Building* b_1 = new Building((string)"Офисное здание", adr, 5, 1, 2, 3, 5, 3);
+	Building* b_2 = new Building((string)"Муниципальное здание", adr, 5, 1, 3, 5, 5, 5);
+
+	*b_2 = *b_1;
+	b_1->inputBuilding();
+
+	b_2->getBuilding();
+	return 0;
+}
