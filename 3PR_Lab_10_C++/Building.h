@@ -165,13 +165,13 @@ public:
 			{
 				throw stabilityFactor;
 			}
-			if (stabilityFactor == 1)
+			if (stabilityFactor == 1.0)
 			{
 				throw '1';
 			}
 			cout << "Отлично! Здание получилось устойчивым с коэффициентом устойчивости k = " << stabilityFactor << "." << endl << endl << endl;
 		}
-		catch (int k)
+		catch (float k)
 		{
 			cout << "Здание не смогло устоять и упало, так как его коэффициент устойчивости k = " << k << "." << endl << endl << endl;
 			char adr[] = "NONE";
